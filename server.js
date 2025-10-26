@@ -15,8 +15,19 @@ const PORT = process.env.PORT || 4000;
 
 
 // CORS setup
-const allowedOrigin = process.env.FRONTEND_URL || "*";
-app.use(cors({ origin: allowedOrigin }));
+const allowedOrigins = [
+  "https://zellepays.netlify.app",
+  "http://localhost:5173",
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) callback(null, true);
+    else callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+}));
+
 
 // ─────────────────────────────
 // Middleware
