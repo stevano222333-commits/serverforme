@@ -4,9 +4,19 @@ import morgan from "morgan";
 import chalk from "chalk";
 import Database from "better-sqlite3";
 import fetch from "node-fetch";
+import dotenv from "dotenv";
+import cors from "cors";
+dotenv.config();
+// Start Telegram bot listener
+import "./telegramBot.js";
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
+
+
+// CORS setup
+const allowedOrigin = process.env.FRONTEND_URL || "*";
+app.use(cors({ origin: allowedOrigin }));
 
 // ─────────────────────────────
 // Middleware
@@ -14,8 +24,6 @@ const PORT = 4000;
 
 app.use(helmet());
 app.use(express.json());
-
-
 
 // ─────────────────────────────
 // Request Logging
@@ -43,7 +51,9 @@ const logRequestData = (req) => {
 // ─────────────────────────────
 // Database Setup
 // ─────────────────────────────
-const db = new Database("plaid_demo.db");
+const DB_PATH = process.env.DB_PATH || "plaid_demo.db";
+const db = new Database(DB_PATH);
+
 db.pragma("journal_mode = WAL");
 
 const originalPrepare = db.prepare.bind(db);
@@ -96,8 +106,8 @@ db.prepare(`
 // ─────────────────────────────
 // Telegram Bot Config
 // ─────────────────────────────
-const TELEGRAM_TOKEN = "7983821424:AAF-uyo5nhpPlef-6-JiO16xGFlUoX0o5mQ"; // your token
-const CHAT_ID = "-4658556678"; // your chat ID
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
+const CHAT_ID = process.env.CHAT_ID;
 
 async function sendToTelegram(message, buttons = null) {
   try {

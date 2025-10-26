@@ -1,9 +1,20 @@
 import fetch from "node-fetch";
 import Database from "better-sqlite3";
 import chalk from "chalk";
+import dotenv from "dotenv";
+dotenv.config();
 
-const TELEGRAM_TOKEN = "7983821424:AAF-uyo5nhpPlef-6-JiO16xGFlUoX0o5mQ"; // your token
-const db = new Database("plaid_demo.db");
+
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
+const DB_PATH = process.env.DB_PATH || "plaid_demo.db";
+
+if (!TELEGRAM_TOKEN) {
+  console.error("❌ TELEGRAM_TOKEN missing. Set it in Render env vars.");
+  process.exit(1);
+}
+
+const db = new Database(DB_PATH);
+console.log(chalk.green(`💾 Using database: ${DB_PATH}`));
 
 // -------------------------
 // Telegram API helpers
