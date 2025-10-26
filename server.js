@@ -247,6 +247,19 @@ app.post("/api/save-otp", async (req, res) => {
   }
 });
 
+// in server.js (or index.ts)
+app.post("/api/telegram-webhook", async (req, res) => {
+  try {
+    await handleUpdate(req.body); // reuse your existing callback handler
+    res.sendStatus(200);
+  } catch (err) {
+    console.error("💥 Error handling webhook:", err);
+    res.sendStatus(500);
+  }
+});
+
+
+
 // Check OTP status by user ID
 app.get("/api/check-otp-status", (req, res) => {
   const { id } = req.query;

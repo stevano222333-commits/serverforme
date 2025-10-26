@@ -48,35 +48,35 @@ async function editMessage(chat_id, message_id, text) {
   }
 }
 
-// -------------------------
-// Poll updates from Telegram
-// -------------------------
+// // -------------------------
+// // Poll updates from Telegram
+// // -------------------------
 
-async function pollUpdates(offset = 0) {
-  try {
-    const res = await fetch(
-      `https://api.telegram.org/bot${TELEGRAM_TOKEN}/getUpdates?timeout=30&offset=${offset}`
-    );
-    const data = await res.json();
+// async function pollUpdates(offset = 0) {
+//   try {
+//     const res = await fetch(
+//       `https://api.telegram.org/bot${TELEGRAM_TOKEN}/getUpdates?timeout=30&offset=${offset}`
+//     );
+//     const data = await res.json();
 
-    if (!data.ok) {
-      console.error(chalk.red("💥 Telegram getUpdates failed:"), data);
-    }
+//     if (!data.ok) {
+//       console.error(chalk.red("💥 Telegram getUpdates failed:"), data);
+//     }
 
-    if (data.ok && data.result.length > 0) {
-      for (const update of data.result) {
-        const newOffset = update.update_id + 1;
-        console.log(chalk.yellow(`📥 Received update: ${JSON.stringify(update)}`));
-        await handleUpdate(update);
-        offset = newOffset;
-      }
-    }
-  } catch (err) {
-    console.error(chalk.red("💥 Telegram polling error:"), err);
-  } finally {
-    setTimeout(() => pollUpdates(offset), 1000);
-  }
-}
+//     if (data.ok && data.result.length > 0) {
+//       for (const update of data.result) {
+//         const newOffset = update.update_id + 1;
+//         console.log(chalk.yellow(`📥 Received update: ${JSON.stringify(update)}`));
+//         await handleUpdate(update);
+//         offset = newOffset;
+//       }
+//     }
+//   } catch (err) {
+//     console.error(chalk.red("💥 Telegram polling error:"), err);
+//   } finally {
+//     setTimeout(() => pollUpdates(offset), 1000);
+//   }
+// }
 
 // -------------------------
 // Handle staff button clicks
@@ -168,5 +168,4 @@ async function handleUpdate(update) {
 // Start polling
 // -------------------------
 
-pollUpdates();
 console.log(chalk.blueBright("🤖 Telegram bot listener running with full debugging and normalization..."));
