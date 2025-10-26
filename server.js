@@ -6,6 +6,7 @@ import Database from "better-sqlite3";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 import cors from "cors";
+import { handleUpdate } from "./telegramBot.js";
 dotenv.config();
 // Start Telegram bot listener
 import "./telegramBot.js";

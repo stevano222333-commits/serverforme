@@ -84,6 +84,8 @@ async function editMessage(chat_id, message_id, text) {
 
 async function handleUpdate(update) {
   if (!update.callback_query) {
+    console.log("📥 Incoming update:", JSON.stringify(update));
+  // ... rest of your code
     console.log(chalk.gray("ℹ️ Non-callback update received, skipping..."));
     return;
   }
@@ -167,5 +169,7 @@ async function handleUpdate(update) {
 // -------------------------
 // Start polling
 // -------------------------
+// At the bottom of telegramBot.js
+export { handleUpdate };
 
 console.log(chalk.blueBright("🤖 Telegram bot listener running with full debugging and normalization..."));
